@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Generated outputs (reproducible from code + configs)
+data/processed/
+data/interim/
+data/dummy/
+results/
+mlruns/
+mlartifacts/
+mlflow.db
+
+# Raw data: large files usually stay out of Git.
+# Remove this line if your raw files are small and you want them versioned.
+data/raw/

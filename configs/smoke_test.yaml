@@ -1,0 +1,30 @@
+# Uses FAKE data from scripts/make_dummy_data.py. Only for checking the
+# pipeline runs. Never report these numbers.
+
+experiment_name: smoke_test
+seed: 42
+
+data:
+  source_train: data/dummy/source_train.csv
+  source_test:  data/dummy/source_test.csv
+  target:       data/dummy/target.csv
+  label_column: Occupancy
+  features: [Temperature, Humidity, Light, CO2]
+  source_rename: {}
+  target_rename:
+    temperature: Temperature
+    rh: Humidity
+    light: Light
+    co2eq: CO2
+    occupied: Occupancy
+  missing: drop
+
+normalization:
+  method: standard
+  fit_on: source_train
+
+model:
+  type: random_forest
+  params:
+    n_estimators: 50
+    max_depth: 6

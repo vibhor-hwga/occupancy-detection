@@ -1,0 +1,40 @@
+# Experiment config. Copy this file to make a new experiment; never edit
+# a config after its results are reported - make a new one instead.
+
+experiment_name: cross_domain_occupancy
+seed: 42
+
+data:
+  # Source domain (UCI Occupancy Detection). Put the original files in data/raw/uci/
+  source_train: data/raw/uci/datatraining.txt
+  source_test:  data/raw/uci/datatest.txt
+  # Target domain (HPDmobile), built by scripts/prepare_hpdmobile.py
+  # (1-minute rows per hub, all homes).
+  target:       data/interim/hpdmobile_combined.csv
+
+  label_column: Occupancy
+
+  # Features used for training. Must exist in BOTH domains after renaming.
+  features: [Temperature, Humidity, Light, CO2]
+
+  # Rename columns so both domains use the same names.
+  source_rename: {}           # UCI already uses the names above
+  target_rename:              # left side = column in hpdmobile_combined.csv
+    temp_c: Temperature
+    rh_percent: Humidity
+    light_lux: Light
+    co2eq_ppm: CO2
+    occupied: Occupancy
+
+  # How to handle rows with missing feature values: drop | ffill
+  missing: drop
+
+normalization:
+  method: standard            # standard | minmax
+  fit_on: source_train        # never change this for zero-shot experiments
+
+model:
+  type: random_forest         # logistic_regression | random_forest | mlp
+  params:
+    n_estimators: 100
+    max_depth: 8
